@@ -1,20 +1,19 @@
 #!/bin/bash
 
 BACKUP_DIR="$HOME/gitea-backups"
-VOLUME_NAME="gitea_data"
 DATE=$(date +%F_%H-%M-%S)
-BACKUP_FILE="$BACKUP_DIR/gitea_backup_$DATE.tar.gz"
+BACKUP_FILE="$BACKUP_DIR/gitea_data_$DATE.tar.gz"
 RCLONE_REMOTE="gdrive"
 RCLONE_REMOTE_DIR="GiteaBackups"
+GITEA_DATA_DIR="$HOME/gitea-data/data"
 
 mkdir -p "$BACKUP_DIR"
 
 echo ">>> Dừng container Gitea..."
 docker-compose down
 
-echo ">>> Backup volume $VOLUME_NAME sang file $BACKUP_FILE ..."
-docker run --rm -v $VOLUME_NAME:/volume -v "$BACKUP_DIR":/backup busybox \
-    tar czvf "/backup/gitea_backup_$DATE.tar.gz" -C /volume .
+echo ">>> Backup thư mục $GITEA_DATA_DIR sang file $BACKUP_FILE ..."
+tar czvf "$BACKUP_FILE" -C "$GITEA_DATA_DIR" .
 
 echo ">>> Khởi động lại container Gitea..."
 docker-compose up -d
