@@ -2,7 +2,7 @@
 
 BACKUP_DIR="$HOME/gitea-backups"
 VOLUME_NAME="gitea_data"
-DATE=$(date +%F_%H-%M-%S)   # Thêm giờ-phút-giây
+DATE=$(date +%F_%H-%M-%S)
 BACKUP_FILE="$BACKUP_DIR/gitea_backup_$DATE.tar.gz"
 RCLONE_REMOTE="gdrive"
 RCLONE_REMOTE_DIR="GiteaBackups"
@@ -22,4 +22,7 @@ docker-compose up -d
 echo ">>> Upload file backup lên Google Drive ($RCLONE_REMOTE:$RCLONE_REMOTE_DIR)..."
 rclone copy "$BACKUP_FILE" "$RCLONE_REMOTE:$RCLONE_REMOTE_DIR" --progress
 
-echo ">>> Hoàn tất backup và upload!"
+echo ">>> Xóa thư mục backup $BACKUP_DIR để giải phóng dung lượng..."
+rm -rf "$BACKUP_DIR"
+
+echo ">>> Hoàn tất backup, upload và dọn dẹp!"
