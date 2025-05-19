@@ -8,11 +8,8 @@ services:
       - USER_UID=1000
       - USER_GID=1000
     volumes:
-      - gitea_data:/data
+      - ./data:/data
     ports:
       - "3000:3000"  # Web UI port
       - "222:22"     # SSH port
     restart: always
-
-volumes:
-  gitea_data:
